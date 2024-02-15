@@ -1,0 +1,44 @@
+{% paginate blog.articles by section.settings.number_of_blog_posts %}
+  {% for article in blog.articles %}
+    <div>
+      {% if article.image != blank %}
+        <img src="{{ article.image | image_url: width: "300px"}}" alt="{{ article.image.alt }}">
+        {% else %}
+        {{ "image" |  placeholder_svg_tag: "w-20" }}
+      {% endif %}
+      <h1>{{ article.title }}</h1>
+      {% unless section.settings.hide_description %}
+        {% if article.excerpt.size > 0 %}
+          <p>{{ article.excerpt |  strip_html}}</p>
+          {% else %}
+              <p>{{ article.content |  strip_html |  truncatewords: 15 }}</p>
+        {% endif %}
+      {% endunless %}
+      
+    </div>
+    
+  {% endfor %}
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    {
+      "type": "range",
+      "id": "number_of_blog_posts",
+      "label": "Number of blog posts per page",
+      "default": 3,
+      "min": 1,
+      "max": 6,
+      "step": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_description",
+      "label": "Hide description",
+      "default": false
+    }
+    ]
+}
+{% endschema %}
