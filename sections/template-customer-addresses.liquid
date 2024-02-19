@@ -48,7 +48,12 @@
 
         <div class="mb-4">
           <label for="address_country_{{ form.id }}" class="uppercase text-gray-700 text-xs font-medium mb-2">Country</label>
-          <select name="address[country]" id="address_country_{{ form.id }}" value="{{ form.country }}" class="w-full text-gray-700 border px-4 py-3 focus:outline-none">
+          <select 
+          name="address[country]" 
+          id="address_country_{{ form.id }}" 
+          value="{{ form.country }}" 
+          class="w-full text-gray-700 border px-4 py-3 focus:outline-none"
+          data-id="{{ form.id }}">
             {{ all_country_option_tags }}
           </select>
         </div>
@@ -104,3 +109,87 @@
   </div>
 
 </div>
+
+<script>
+  class CustomerAddress {
+    constructor() {
+      this.initCustomerAddress()
+      this.customerAddressesCountrySelector()
+    }
+
+    initCustomerAddress() {
+      const allAddressesSelector = document.querySelectorAll('select[name="address[country]"]');
+      if(allAddressesSelector.length < 1) return;
+
+      // console.log(allAddressesSelector)
+      allAddressesSelector.forEach((select) => {
+        const selectedCountry = this.getSelectedCountry(select);
+        if(!selectedCountry) return;
+
+        const provinces = selectedCountry.dataset.provinces;
+        const arrayOfProvinces = JSON.parse(provinces);
+
+        const provinceSelector = document.querySelector(`#address_province_${select.dataset.id}`);
+        if(arrayOfProvinces.length < 1) {
+          provinceSelector.setAttribute('disabled', 'disabled');
+        } else {
+          provinceSelector.removeAttribute('disabled');
+        }
+
+        provinceSelector.innerHTML = "";
+        let options = "";
+
+        for(let index = 0; index < arrayOfProvinces.length; index++) {
+          if(arrayOfProvinces[index][0] === provinceSelector.getAttribute("value")) {
+            options += `<option value="${arrayOfProvinces[index][0]}" selected>${arrayOfProvinces[index][0]}</option>`;
+          } else {
+            options += `<option value="${arrayOfProvinces[index][0]}">${arrayOfProvinces[index][0]}</option>`;
+          
+          }
+        }
+        provinceSelector.innerHTML = options;
+      })
+    }
+
+    getSelectedCountry(select) {
+      let option, selectedOption;
+      for(let index = 0; index < select.options.length; index++) {
+        option = select.options[index];
+        if(option.value === select.getAttribute('value')) {
+          selectedOption = option;
+          selectedOption.setAttribute('selected', 'selected');
+          break;
+        }
+      }
+      return selectedOption;
+    }
+    
+    customerAddressesCountrySelector() {
+      const addressesSelector = document.querySelectorAll('select[name="address[country]"]');
+      if(addressesSelector.length < 1) return;
+
+
+      addressesSelector.forEach(select => {
+        select.addEventListener('change', (e) => {
+          const provinces = e.target.options[e.target.selectedIndex].dataset.provinces;
+          const arrayOfProvinces = JSON.parse(provinces);
+          const provinceSelector = document.querySelector(`#address_province_${e.target.dataset.id}`);
+          if(arrayOfProvinces.length < 1) {
+            provinceSelector.setAttribute('disabled', 'disabled');
+          } else {
+            provinceSelector.removeAttribute('disabled');
+          }
+
+          provinceSelector.innerHTML = "";
+          let options = "";
+          for(let index = 0; index < arrayOfProvinces.length; index++) {
+            options += `<option value="${arrayOfProvinces[index][0]}">${arrayOfProvinces[index][0]}</option>`;
+          }
+          provinceSelector.innerHTML = options;
+        })
+      })
+    }
+  }
+
+  const customerAddress = new CustomerAddress();
+</script>
