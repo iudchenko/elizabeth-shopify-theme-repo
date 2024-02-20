@@ -17,7 +17,7 @@
                   {% endif %}
 
                   {% if collection_image != blank %}
-                    <img src="{{ collection_image | image_url: width: "450px"  }}" alt="{{ collection.title | escape }}" class="w-full h-full object-cover transition duration-1000 ease-in-out transform hover:scale-105">
+                    <img src="{{ collection_image | image_url: width: "450px"  }}" alt="{{ collection.title | escape }}" class="w-full h-full object-cover transition duration-1000 ease-in-out transform hover:scale-105" width="450" height="320">
                   {% else %}
                     {{ 'collection-1' | placeholder_svg_tag }}
                   {% endif %}

@@ -36,9 +36,11 @@
           {% if article.image != blank %}
             <img
               class="h-80 w-full object-cover object-center md:h-96"
-              src="{{article.image | img_url: 'large'}}"
+              src="{{article.image | image_url: width: "320px"}}"
               loading="lazy"
               alt="{{article.image.alt}}"
+              width="320"
+              height="320"
             >
           {% else %}
             {% assign placeholder_image = 'lifestyle-1' %}
@@ -166,7 +168,7 @@
       "description": {{article.excerpt |  strip_html | json }},
     {% endif %}
     {% if article.image %}
-      "image": [ {{ article.image | img_url: 'medium' | prepend: "https:" | json }}],
+      "image": [ {{ article.image | image_url: width: "320px" | prepend: "https:" | json }}],
     {% endif %}
     "datePublished": {{ article.published_at | date: format: "default" | json }},
     "url": {{ shop.url | append: article.url |  strip_html | json }},

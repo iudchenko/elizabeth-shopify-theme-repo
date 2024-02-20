@@ -1350,6 +1350,14 @@ video {
   height: 3rem;
 }
 
+.h-\[\] {
+  height: ;
+}
+
+.h-\[100vw\] {
+  height: 100vw;
+}
+
 .min-h-\[500px\] {
   min-height: 500px;
 }

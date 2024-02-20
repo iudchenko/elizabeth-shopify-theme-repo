@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 
 {% assign selected_variant = product.selected_or_first_available_variant %}
 
@@ -36,11 +36,11 @@
       </div>
 
       <div class="md:hidden">
-        <div class="swiper h-[22rem]">
+        <div class="swiper">
           <div class="swiper-wrapper">
             {% for media in product.media %}
               <div class="swiper-slide">
-                <div class="h-80 overflow-hidden p-2">
+                <div class="h-[100vw] overflow-hidden p-2">
                   {% render "product-media", media: media %}
                 </div>
               </div>
@@ -211,7 +211,8 @@
 </script>
 
 <script>
-  const swiper = new Swiper(".swiper", {
+  document.addEventListener("DOMContentLoaded", () => {
+    const swiper = new Swiper(".swiper", {
     direction: "horizontal",
     pagination: {
       el: ".swiper-pagination",
@@ -222,6 +223,8 @@
       prevEl: ".swiper-button-prev",
     },
   })
+  })
+
 </script>
 
 {% schema %}
